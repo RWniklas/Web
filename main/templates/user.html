@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+    
+    {% for post in posts%}
+        {% if post.priv==False or post.author==current_user%}
+
+        
+        {{ form.hidden_tag() }}
+            <div class="container mt-5 mb-5">
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="d-flex justify-content-between p-2 px-3">
+                            <div class="d-flex flex-row align-items-center"> <img src="{{url_for('static',filename='assets/'+ post.author.image_file)}}"width="50" class="rounded-circle">
+                                <div class="d-flex flex-column ml-2"> <span class="font-weight-bold">{{ post.author.username }}</span> <small class="text-primary">Collegues</small> </div>
+                            </div>
+                            <div class="d-flex flex-row mt-1 ellipsis"> <small class="mr-2">{{ post.date_posted.strftime('%Y-%m-%d') }}</small> <i class="fa fa-ellipsis-h"></i> </div>
+                        </div> <img src="{{url_for('static',filename='assets/'+ post.img)}}" class="img-fluid">
+                        <div class="p-2">
+                            <h class="text-justify">{{ post.title }}</h>
+                            <p class="text-justify">{{ post.content }}</p>
+                            <p class="text-justify">{{ post.like|length }}</p>
+                            <p class="text-justify">{{post.priv}}</p>
+                            {% if current_user.is_authenticated %}
+                                <form method="POST",action="" >
+                                    <input type="hidden" name="post" value={{post.id}}>
+                                {% if post.id in user_like_id %}
+                                    <p><input type="submit" name="like_box" value="delike">                  </p>
+                            
+                                {% else %}
+                                    <p><input type="submit" name="like_box" value="like">                  </p>
+                                {%endif%} 
+                            {%endif%} 
+
+
+                            </form>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex flex-row icons d-flex align-items-center"> <i class="fa fa-heart"></i> <i class="fa fa-smile-o ml-2"></i> </div>
+                                <div class="d-flex flex-row muted-color"> <span>{{post.comments|length}}</span> <span class="ml-2">.      Comments in total</span> </div>
+                            </div>
+                            <hr>
+                            <div class="comments">
+                                {% for com in post.comments %}
+                                    <div class="d-flex flex-row mb-2"> <img src="{{url_for('static',filename='assets/'+ com.author.image_file)}}" width="40" class="rounded-image">
+                                        <div class="d-flex flex-column ml-2"> <a class="name" href="{{url_for('profile',user=com.author.username)}}">{{com.author.username}} </a> <small class="comment-text">{{com.content}}</small>
+                                           
+                                    
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                
+                                <div class="comment-input"> 
+                                   <form method="POST",action="">
+                                    <p>Comment</p>
+                                    <p><input type="text" name="content"></p>
+                                    <input type="hidden" name="post" value={{post.id}}>
+                                    <p><input type="submit" name="submit"></p>
+                                    
+
+
+
+
+                                   </form>  
+                                    
+                                </div>
+                                <div class="form-group">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+{% endblock content %}

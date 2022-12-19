@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="signup-form">
+    <form action="" method="POST">
+      {{ form.hidden_tag() }}
+		<h2>Login</h2>
+		<p class="hint-text">Sign into your Account</p>
+		
+		
+        <div class="form-group"> 
+        	{{ form.username.label(class="form-control-label") }}
+
+                    {% if form.username.errors %}
+                        {{ form.username(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.username(class="form-control form-control-lg") }}
+                    {% endif %}
+        </div>
+		<div class="form-group">
+        	{{ form.password.label(class="form-control-label") }}
+                    {% if form.password.errors %}
+                        {{ form.password(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.password(class="form-control form-control-lg") }}
+                    {% endif %}
+        </div>
+        <div class="form-check">
+            {{ form.remember(class="form-check-input") }}
+            {{ form.remember.label(class="form-check-label") }}
+        </div>
+		
+        <div class="form-group">
+            {{form.submit(class="btn btn-success btn-lg btn-block signup-btn")}}
+        </div>
+    </form>
+    <div class="text-center">I don´t have an account? <a href="{{ url_for('register') }}">Register Here</a></div>
+    <div class="text-center">I forgot my passwort <a href="#">Recover it here</a></div>
+</div>
+
+{% endblock content %}
